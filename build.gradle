@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group 'org.boofcv'
+version '0.32-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    ['android', 'core'].each {
+        String a -> compile group: 'org.boofcv', name: 'boofcv-'+a, version: '0.31'
+    }
+
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    )
+}
