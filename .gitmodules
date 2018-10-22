@@ -1,0 +1,3 @@
+[submodule "boofcv"]
+	path = boofcv
+	url = https://github.com/lessthanoptimal/BoofCV.git
