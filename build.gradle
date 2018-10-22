@@ -16,9 +16,10 @@ repositories {
 }
 
 dependencies {
-    ['android', 'core'].each {
-        String a -> compile group: 'org.boofcv', name: 'boofcv-'+a, version: '0.31'
+    ['android', 'core' ].each {
+        String a -> compile group: 'org.boofcv', name: 'boofcv-'+a, version: version
     }
+    compile group: 'org.boofcv', name: 'demonstrations', version: version
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter-api:5.3.1'
@@ -26,4 +27,22 @@ dependencies {
     testRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.3.1'
     )
+}
+
+// Create a jar which contains all the applications
+task demonstrations(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'BoofCV Demonstrations Jar',
+                'Implementation-Version': version,
+                'Main-Class': 'boofcv.DemonstrationLauncherApp'
+    }
+
+    outputs.upToDateWhen { false }
+
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+    doLast {
+        archivePath.renameTo(file('demonstrations.jar'))
+    }
 }
