@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    ['android', 'core' ].each {
+    ['core' ].each {
         String a -> compile group: 'org.boofcv', name: 'boofcv-'+a, version: version
     }
     compile group: 'org.boofcv', name: 'demonstrations', version: version
