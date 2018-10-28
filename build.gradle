@@ -46,3 +46,8 @@ task demonstrations(type: Jar) {
         archivePath.renameTo(file('demonstrations.jar'))
     }
 }
+
+task wrapper(type: Wrapper) {
+    distributionType = Wrapper.DistributionType.BIN
+    gradleVersion = '4.10.2'
+}
