@@ -4,6 +4,10 @@ import boofcv.examples.ExampleLauncherApp;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * @author Peter Abeles
@@ -18,6 +22,9 @@ public class DemoExampleApp extends JPanel {
 
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(620,400));
+
+        // set a border so that the window is distinctive in Windows
+        setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
         BoofLogo logo = new BoofLogo();
 
@@ -54,18 +61,47 @@ public class DemoExampleApp extends JPanel {
         add(buttonDemo);
         add(buttonExample);
 
-        logo.animate(2000);
+        addKeyListener(new ListenQuit());
+
         frame = new JFrame("BoofCV Launcher");
         frame.add(this, BorderLayout.CENTER);
         frame.setUndecorated(true);
         frame.pack();
         frame.setLocationRelativeTo(null);
+
+        // Don't start animating it until it's shown. On windows the initial opening
+        // from a jar can be very slow
+        logo.radius = 1;
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                logo.animate(2000);
+            }
+        });
+
         frame.setVisible(true);
+        requestFocus();
+    }
+
+    public class ListenQuit implements KeyListener {
+
+        @Override
+        public void keyTyped(KeyEvent e) {}
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if( e.isAltDown() || e.isControlDown() ) {
+                if( e.getKeyCode() == KeyEvent.VK_Q ) {
+                    System.exit(0);
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {}
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(()->{
-            DemoExampleApp app = new DemoExampleApp();
-        });
+        SwingUtilities.invokeLater(DemoExampleApp::new);
     }
 }
