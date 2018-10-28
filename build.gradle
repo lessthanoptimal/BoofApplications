@@ -16,9 +16,10 @@ repositories {
 }
 
 dependencies {
-    ['core' ].each {
+    ['core','swing' ].each {
         String a -> compile group: 'org.boofcv', name: 'boofcv-'+a, version: version
     }
+    compile group: 'org.boofcv', name: 'examples', version: version
     compile group: 'org.boofcv', name: 'demonstrations', version: version
 
     testImplementation(
@@ -34,7 +35,7 @@ task demonstrations(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'BoofCV Demonstrations Jar',
                 'Implementation-Version': version,
-                'Main-Class': 'boofcv.DemonstrationLauncherApp'
+                'Main-Class': 'boofcv.DemoExampleApp'
     }
 
     outputs.upToDateWhen { false }
@@ -45,6 +46,36 @@ task demonstrations(type: Jar) {
     doLast {
         archivePath.renameTo(file('demonstrations.jar'))
     }
+}
+
+def myCopy( src , dst ) {
+    assert file(src).exists()
+    copy {
+        from src
+        into dst
+    }
+}
+
+task releaseDirectory( dependsOn:[demonstrations]) {
+
+    file('demonstration.jar').delete()
+    file('BoofDemonstrations.zip').delete()
+    file('tmp').deleteDir()
+    file('tmp/BoofDemonstrations').mkdirs()
+
+    doLast {
+        myCopy( 'release_files/demonstrations.bat',  'tmp/BoofDemonstrations')
+        myCopy( 'release_files/demonstrations.sh',   'tmp/BoofDemonstrations')
+        myCopy( 'release_files/readme.txt',          'tmp/BoofDemonstrations')
+        file("demonstrations.jar").renameTo(file("tmp/BoofDemonstrations/demonstrations.jar"))
+    }
+}
+
+task releaseZip( type: Zip, dependsOn:releaseDirectory) {
+    from 'tmp'
+
+    destinationDir = file('./')
+    archiveName = 'BoofDemonstrations.zip'
 }
 
 task wrapper(type: Wrapper) {

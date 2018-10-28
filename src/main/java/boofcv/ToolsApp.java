@@ -1,4 +1,4 @@
-package org.boofcv;
+package boofcv;
 
 /**
  * @author Peter Abeles
