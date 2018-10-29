@@ -75,7 +75,7 @@ public class DemoExampleApp extends JPanel {
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
-                logo.animate(2000);
+                logo.animate(4000);
             }
         });
 

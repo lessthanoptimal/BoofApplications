@@ -21,9 +21,10 @@ import java.util.TimerTask;
 public class BoofLogo extends JPanel {
 
     public static final String NAME = "BOOFCV";
-    public static final int MAX_RADIUS = 30;
+    public static final int MAX_RADIUS = 40;
 
     int radius = MAX_RADIUS;
+    boolean reverse = false;
 
     public BoofLogo() {
         setBackground(Color.WHITE);
@@ -97,18 +98,21 @@ public class BoofLogo extends JPanel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                radius += 1;
-                repaint();
-                if( radius >= MAX_RADIUS ) {
-                    timer.cancel();
+                radius += reverse ? -1 : 1;
+                if( radius <= 0 ) {
+                    radius = 1;
+                    reverse = false;
+                } else if( radius >= MAX_RADIUS ) {
+                    reverse = true;
                 }
+                repaint();
             }
         }, 0, period/MAX_RADIUS);
     }
 
     public static void main(String[] args) {
         BoofLogo logo = new BoofLogo();
-        logo.animate(2000);
+        logo.animate(4000);
         ShowImages.showWindow(logo,"Logo",true);
     }
 }
