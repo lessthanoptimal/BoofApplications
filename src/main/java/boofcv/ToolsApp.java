@@ -1,7 +1,9 @@
 package boofcv;
 
+import javax.swing.*;
+
 /**
  * @author Peter Abeles
  */
-public class ToolsApp {
+public class ToolsApp extends JPanel {
 }

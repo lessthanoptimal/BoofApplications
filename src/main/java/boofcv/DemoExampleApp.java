@@ -1,6 +1,7 @@
 package boofcv;
 
 import boofcv.examples.ExampleLauncherApp;
+import boofcv.gui.BoofLogo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,7 +72,7 @@ public class DemoExampleApp extends JPanel {
 
         // Don't start animating it until it's shown. On windows the initial opening
         // from a jar can be very slow
-        logo.radius = 1;
+        logo.setRadius(1);
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
