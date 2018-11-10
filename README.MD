@@ -21,3 +21,6 @@ Release Zips
 ./gradlew releaseDemoZip
 ./gradlew releaseAppsZip
 ```
+
+
+scp BoofDemonstrations.zip LOGIN@frs.sourceforge.net:/home/frs/project/boofcv/apps
