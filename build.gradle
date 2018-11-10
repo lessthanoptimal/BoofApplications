@@ -1,51 +1,32 @@
-plugins {
-    id 'java'
-}
+allprojects {
+    apply plugin: 'java'
 
-group 'org.boofcv'
-version '0.32-SNAPSHOT'
+    group 'org.boofcv'
+    version '0.32-SNAPSHOT'
 
-sourceCompatibility = 1.8
+    sourceCompatibility = 1.8
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url = "https://oss.sonatype.org/content/repositories/snapshots/"
-    }
-}
-
-dependencies {
-    ['core','swing' ].each {
-        String a -> compile group: 'org.boofcv', name: 'boofcv-'+a, version: version
-    }
-    compile group: 'org.boofcv', name: 'examples', version: version
-    compile group: 'org.boofcv', name: 'demonstrations', version: version
-
-    testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    )
-    testRuntimeOnly(
-            'org.junit.jupiter:junit-jupiter-engine:5.3.1'
-    )
-}
-
-// Create a jar which contains all the applications
-task demonstrations(type: Jar) {
-    manifest {
-        attributes 'Implementation-Title': 'BoofCV Demonstrations Jar',
-                'Implementation-Version': version,
-                'Main-Class': 'boofcv.DemoExampleApp'
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
 
-    outputs.upToDateWhen { false }
+    dependencies {
+        ['core', 'swing'].each {
+            String a -> compile group: 'org.boofcv', name: 'boofcv-' + a, version: version
+        }
 
-    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-
-    doLast {
-        archivePath.renameTo(file('demonstrations.jar'))
+        testImplementation(
+                'org.junit.jupiter:junit-jupiter-api:5.3.1'
+        )
+        testRuntimeOnly(
+                'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+        )
     }
+    
 }
 
 def myCopy( src , dst ) {
@@ -56,27 +37,6 @@ def myCopy( src , dst ) {
     }
 }
 
-task releaseDirectory( dependsOn:[demonstrations]) {
-
-    file('demonstration.jar').delete()
-    file('BoofDemonstrations.zip').delete()
-    file('tmp').deleteDir()
-    file('tmp/BoofDemonstrations').mkdirs()
-
-    doLast {
-        myCopy( 'release_files/demonstrations.bat',  'tmp/BoofDemonstrations')
-        myCopy( 'release_files/demonstrations.sh',   'tmp/BoofDemonstrations')
-        myCopy( 'release_files/readme.txt',          'tmp/BoofDemonstrations')
-        file("demonstrations.jar").renameTo(file("tmp/BoofDemonstrations/demonstrations.jar"))
-    }
-}
-
-task releaseZip( type: Zip, dependsOn:releaseDirectory) {
-    from 'tmp'
-
-    destinationDir = file('./')
-    archiveName = 'BoofDemonstrations.zip'
-}
 
 task wrapper(type: Wrapper) {
     distributionType = Wrapper.DistributionType.BIN

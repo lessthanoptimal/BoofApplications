@@ -4,10 +4,20 @@ below:
 
 ```commandline
 git submodule update --init --recursive
-rm -rf src/main/resources/*
-cp -r boofcv/demonstrations/src/main/java/* src/main/resources
-cp -r boofcv/examples/src/main/java/* src/main/resources
-cp -r boofcv/data/example/* src/main/resources
+rm -rf demos/src/main/resources/*
+cp -r boofcv/demonstrations/src/main/java/* demos/src/main/resources
+cp -r boofcv/examples/src/main/java/* demos/src/main/resources
+cp -r boofcv/data/example/* demos/src/main/resources
 ```
 
-To build the jar simply call ./gradlew demonstrations.jar
+To build the jars call:
+```commandline
+./gradlew demonstrationsJar
+./gradlew applicationsJar
+```
+
+Release Zips
+```commandline
+./gradlew releaseDemoZip
+./gradlew releaseAppsZip
+```

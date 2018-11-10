@@ -1,0 +1,43 @@
+dependencies {
+    compile group: 'org.boofcv', name: 'examples', version: version
+    compile group: 'org.boofcv', name: 'demonstrations', version: version
+}
+
+// Create a jar which contains all the applications
+task demonstrationsJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'BoofCV Demonstrations Jar',
+                'Implementation-Version': version,
+                'Main-Class': 'boofcv.DemoExampleApp'
+    }
+
+    outputs.upToDateWhen { false }
+
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+    doLast {
+        archivePath.renameTo(file('demonstrations.jar'))
+    }
+}
+
+task releaseDemoDirectory( dependsOn:[demonstrationsJar]) {
+    
+    doLast {
+        rootProject.file('BoofDemonstrations.zip').delete()
+        rootProject.file('tmp').deleteDir()
+        rootProject.file('tmp/BoofDemonstrations').mkdirs()
+        
+        myCopy( 'demos/release_files/demonstrations.bat',  'tmp/BoofDemonstrations')
+        myCopy( 'demos/release_files/demonstrations.sh',   'tmp/BoofDemonstrations')
+        myCopy( 'demos/release_files/readme.txt',          'tmp/BoofDemonstrations')
+        file("demonstrations.jar").renameTo(rootProject.file("tmp/BoofDemonstrations/demonstrations.jar"))
+    }
+}
+
+task releaseDemoZip( type: Zip, dependsOn:releaseDemoDirectory) {
+    from rootProject.file('tmp')
+
+    destinationDir = rootProject.file('./')
+    archiveName = 'BoofDemonstrations.zip'
+}

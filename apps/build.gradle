@@ -1,0 +1,42 @@
+dependencies {
+    compile group: 'org.boofcv', name: 'applications', version: version
+}
+
+// Create a jar which contains all the applications
+task applicationsJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'BoofCV Applications Jar',
+                'Implementation-Version': version,
+                'Main-Class': 'boofcv.app.ApplicationLauncherGui'
+    }
+
+    outputs.upToDateWhen { false }
+
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+    doLast {
+        archivePath.renameTo(file('applications.jar'))
+    }
+}
+
+task releaseAppsDirectory( dependsOn:[applicationsJar]) {
+    
+    doLast {
+        rootProject.file('BoofApplications.zip').delete()
+        rootProject.file('tmp').deleteDir()
+        rootProject.file('tmp/BoofApplications').mkdirs()
+        
+        myCopy( 'apps/release_files/applications.bat',  'tmp/BoofApplications')
+        myCopy( 'apps/release_files/applications.sh',   'tmp/BoofApplications')
+        myCopy( 'apps/release_files/readme.txt',          'tmp/BoofApplications')
+        file("applications.jar").renameTo(rootProject.file("tmp/BoofApplications/applications.jar"))
+    }
+}
+
+task releaseAppsZip( type: Zip, dependsOn:releaseAppsDirectory) {
+    from rootProject.file('tmp')
+
+    destinationDir = rootProject.file('./')
+    archiveName = 'BoofApplications.zip'
+}
