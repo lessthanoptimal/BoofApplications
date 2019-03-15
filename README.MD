@@ -12,15 +12,14 @@ cp -r boofcv/data/example/* demos/src/main/resources
 
 To build the jars call:
 ```commandline
-./gradlew demonstrationsJar
-./gradlew applicationsJar
+./gradlew demonstrationsJar;./gradlew applicationsJar
 ```
 
 Release Zips
 ```commandline
-./gradlew releaseDemoZip
-./gradlew releaseAppsZip
+./gradlew releaseDemoZip;./gradlew releaseAppsZip
 ```
 
 
 scp BoofDemonstrations.zip LOGIN@frs.sourceforge.net:/home/frs/project/boofcv/apps
+scp BoofApplications.zip LOGIN@frs.sourceforge.net:/home/frs/project/boofcv/apps
