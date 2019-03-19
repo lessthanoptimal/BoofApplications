@@ -23,6 +23,6 @@ Release Zips
 Upload
 
 ```commandline
-scp BoofDemonstrations.zip LOGIN@frs.sourceforge.net:/home/frs/project/boofcv/apps
-scp BoofApplications.zip LOGIN@frs.sourceforge.net:/home/frs/project/boofcv/apps
+scp BoofDemonstrations.zip $LOGIN@frs.sourceforge.net:/home/frs/project/boofcv/apps
+scp BoofApplications.zip $LOGIN@frs.sourceforge.net:/home/frs/project/boofcv/apps
 ```
