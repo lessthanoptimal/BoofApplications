@@ -1,5 +1,0 @@
-
-./gradlew demonstrations
-./gradlew releaseZip
-
-scp BoofDemonstrations.zip pabeles@frs.sourceforge.net:/home/frs/project/boofcv/apps/

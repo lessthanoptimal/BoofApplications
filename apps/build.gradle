@@ -7,7 +7,7 @@ task applicationsJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'BoofCV Applications Jar',
                 'Implementation-Version': version,
-                'Main-Class': 'boofcv.app.ApplicationLauncherGui'
+                'Main-Class': 'boofcv.BoofApps'
     }
 
     outputs.upToDateWhen { false }
