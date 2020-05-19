@@ -13,8 +13,9 @@ task demonstrationsJar(type: Jar) {
 
     outputs.upToDateWhen { false }
 
-    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } } {
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    } with jar
 
     doLast {
         archivePath.renameTo(file('demonstrations.jar'))
