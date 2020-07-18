@@ -2,7 +2,7 @@ allprojects {
     apply plugin: 'java'
 
     group 'org.boofcv'
-    version '0.36.1'
+    version '0.37-SNAPSHOT'
 
     sourceCompatibility = 1.8
 
@@ -40,5 +40,5 @@ def myCopy( src , dst ) {
 
 wrapper {
     distributionType = Wrapper.DistributionType.BIN
-    gradleVersion = '5.6.4'
+    gradleVersion = '6.4.1'
 }
