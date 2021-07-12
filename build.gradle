@@ -2,16 +2,22 @@ allprojects {
     apply plugin: 'java'
 
     group 'org.boofcv'
-    version '0.37-SNAPSHOT'
+    version '0.38'
 
-    sourceCompatibility = 1.8
+    // Prevents tons of errors if someone is using ASCII
+    tasks.withType(JavaCompile).configureEach { options.encoding = "UTF-8" }
+    // Creates Java 8 byte code
+//    tasks.withType(JavaCompile).configureEach { options.release = 8 }
+
+    // Enable incremental compile. Should make single file changes faster
+    tasks.withType(JavaCompile) { options.incremental = true }
 
     repositories {
-        mavenLocal()
         mavenCentral()
-        maven {
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
+        mavenLocal()
+
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url = 'https://jitpack.io' } // Allows annotations past Java 8 to be used
     }
 
     dependencies {
@@ -19,12 +25,8 @@ allprojects {
             String a -> compile group: 'org.boofcv', name: 'boofcv-' + a, version: version
         }
 
-        testImplementation(
-                'org.junit.jupiter:junit-jupiter-api:5.3.1'
-        )
-        testRuntimeOnly(
-                'org.junit.jupiter:junit-jupiter-engine:5.3.1'
-        )
+        testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.0')
+        testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.4.0')
     }
     
 }
@@ -40,5 +42,5 @@ def myCopy( src , dst ) {
 
 wrapper {
     distributionType = Wrapper.DistributionType.BIN
-    gradleVersion = '6.4.1'
+    gradleVersion = '6.8.3'
 }
