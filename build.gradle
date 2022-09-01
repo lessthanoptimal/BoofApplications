@@ -1,8 +1,8 @@
 allprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
 
     group 'org.boofcv'
-    version '0.40'
+    version '0.41'
 
     // Prevents tons of errors if someone is using ASCII
     tasks.withType(JavaCompile).configureEach { options.encoding = "UTF-8" }
@@ -22,7 +22,7 @@ allprojects {
 
     dependencies {
         ['core', 'swing'].each {
-            String a -> compile group: 'org.boofcv', name: 'boofcv-' + a, version: version
+           api(group: 'org.boofcv', name: "boofcv-$it", version: version)
         }
 
         testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.0')
@@ -42,5 +42,5 @@ def myCopy( src , dst ) {
 
 wrapper {
     distributionType = Wrapper.DistributionType.BIN
-    gradleVersion = '6.8.3'
+    gradleVersion = '7.3.3'
 }

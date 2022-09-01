@@ -1,5 +1,5 @@
 dependencies {
-    compile group: 'org.boofcv', name: 'applications', version: version
+    api group: 'org.boofcv', name: 'applications', version: version
 }
 
 // Create a jar which contains all the applications
@@ -12,12 +12,14 @@ task applicationsJar(type: Jar) {
 
     outputs.upToDateWhen { false }
 
-    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } } {
-        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-    } with jar
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveFile.set(file('applications.jar'))
 
-    doLast {
-        archivePath.renameTo(file('applications.jar'))
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from { configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) } } {
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
     }
 }
 
